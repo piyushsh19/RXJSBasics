@@ -69,3 +69,66 @@ The real power comes with the “reactive extensions” (hence “ReactiveX”) 
 These Rx operators allow you to compose asynchronous sequences together in a declarative manner with all the efficiency benefits of callbacks but without the drawbacks of nesting callback handlers that are typically associated with asynchronous systems.
 
 
+CHAPTER 1 
+Its a push based approach.We turn the control of functione(next complete , erorr) over to the producerdata in this case then obsrvables then pushes the observer data arrives in a way this isthe essence of by invoking these callbacks as data Here we define how to react by regestriing functions to express the flow of data through our stream as it arrives.
+The Rxjs has built in operator function, by which we can compose the stream in statless manner declarateviely ex[pressing the flow of data through your observables. Operators in rxjs is real time queries as data. 
+The oprators las lot of functional and refreffed as lodash events. Rxjs react to data as its pushed from observable to the observer.
+NGRTX librabires and tools for angular
+...........................................................
+
+npm install --save rxjs
+
+After install we can import creation operator and classes from root rxjs.And operator pipes from operators directory. like {map} fro. 'rxjs/operators'.
+Instead of useing es6 module  import we can also use sertucting to pull whatever operators or classes we need off the global rxjs and objects.
+const { observables,fromEvent} =rxjs
+const {map} = rxjs.operators;
+
+Create first Observables:-
+The core reactive programming with rxjs is observable. Obervables represent stream of data or collection of it delivered over time .We can create observable by helper function which rxjs offers.
+
+1. import  Obervable 
+2. Declare the variable obervable 
+ const Observable = new Observable   
+ const Observable = Observable.create     // we can use static craete observable function which behind the scene call observables
+
+observable constructor   expect  a function which recaieve a subscriber. In this we decide which input value does observables  sent to the  subsriber. This is know as PUSH based approach. The Observable has the contorl and subsriber just listen to it.
+In Rxjs If we say next method then its tell to sunsriber that it has new value.
+
+In order to trigger an observable we need to call subsribe on the observable.
+
+ const Observable = new Observable (subscriber => {
+    subscriber.next('Hello');
+ })
+
+ observable.subscribe(
+    //observer  here
+ )
+
+ 3. Create an observer = Its just an object which contain upto three properties. 
+            First is next which reperents the happy path function that is invoked when the observer will emits the new value, It can be call many times.
+            Second is error - when error occured this callback is occured once ehich has the error object.
+            Third is complete - When observable is complete and on;ly invoked once time and does not recieve any value
+  const observer  = {
+
+    next: value => console.log('next', value),
+    error: error => console.log('error', error),
+    complete: ()=> console.log("copmpleted")
+  }
+
+  Now  we have the observer we can supply to subscribe method like
+
+  observable.subscribe(observer); // in console  next Hello
+
+  Right now we are emmiting one value but observable can emit number of values for any period of time .
+  const Observable = new Observable (subscriber => {
+    subscriber.next('Hello');
+     subscriber.next('World');
+ })
+ Here we are passing two values then we call completed so its does not run any other value. It just igonred the value piyush. 
+   const Observable = new Observable (subscriber => {
+    subscriber.next('Hello');
+     subscriber.next('World');
+    subscriber.complete();
+        subscriber.next('piyush');
+
+ })
