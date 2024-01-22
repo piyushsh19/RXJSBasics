@@ -132,3 +132,65 @@ In order to trigger an observable we need to call subsribe on the observable.
         subscriber.next('piyush');
 
  })
+
+Chapter 2 
+We can pass the function in observable trought subscribe.
+If we copy  function into subscribe method. Thenit hooked up to the scriber an invoked on next notification.
+
+  observable.subscribe(
+    value => console.log('next', value) // next Hello next world
+  )
+  for ref -image 2 and 3.
+
+Deliver values Asyncronously with observables:-
+
+Till now we are emitting values syncronously , which is certainly is nopt a norm.Building reactive interfaces with Rxjs will deals with long running asyncronously events dream based offuser ineration such as mouse and keyboard events.
+
+Interval Creation Operator example : 
+
+ const Observable = new Observable (subscriber => {
+    \ let count = 0 ;
+
+    setInterval(()=> {
+      subscriber.next(count);
+      count+= 1;
+    },1000)
+
+ })
+ But this counter run forver ,we need to clear it once its complete. We need to create a id 
+ 
+ const Observable = new Observable (subscriber => {
+     let count = 0 ;
+
+    const id  = setInterval(()=> {
+      subscriber.next(count);
+      subsrriber.complete
+      count+= 1;
+    },1000)
+    return () = > {
+      console.log(*'called);
+    clearInterval (id) // the id is cleared  here after first value is emiited 
+      }
+
+ })
+
+ Manage observable subscriptions with unsubscribe:
+
+ Whenever we subsrcibe to the observable. A subscription object is returned.
+  
+  const subscription  = observable.subscribe(
+    observer
+  );
+
+  Here we add a varaible called subscription here to capture subscription being returned. Its takes an un subsrvibe method as parram.For eg here its clear the set interval after 3 sec.
+    const subscription  = observable.subscribe(
+    observer
+  );
+SetTimeout(()=>{
+  subscription.unsubscribe()
+}, 3500)
+we can also add mutiple subsrciption like 
+subscription.add(subscriptionTwo)
+
+
+note: -  The callback we registered for complete with our observer is not fired, with observable rulex to complete callback registers is only fire for completed notification
