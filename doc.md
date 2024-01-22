@@ -193,4 +193,122 @@ we can also add mutiple subsrciption like
 subscription.add(subscriptionTwo)
 
 
-note: -  The callback we registered for complete with our observer is not fired, with observable rulex to complete callback registers is only fire for completed notification
+note: -  The callback we registered for complete with our observer is not fired, with observable rulex to complete callback registers is only fire for completed notification.
+
+Creation Oprators /Pipeable operators
+of, from, from Evets,Interval(1000)
+Let take how a dumb events can be turned into Stream of beservable trough (From Event)..
+FromEvent takes arguments as event target or element for instance btm or input box.
+
+ *  Each subscription creates it's own execution path between
+ *  observable and observer (also known as unicasting). So, in this case,
+ *  every subscription will wire up a new event listener.
+
+ ...............................
+ The of oprators supply values syncronously.
+ import { of, range } from 'rxjs';
+
+const observer = {
+    next: val => console.log('next', val),
+    error: err => console.log('error', err),
+    complete: () => console.log('complete!')
+};
+
+/*
+ * Emits each item you provide in sequence, synchronously.
+ * of literally just loops through the items and emits them,
+ * there is no flattening involved. For instance, if you pass an
+ * array the entire array will be emitted, not each item within
+ * the array.
+ */
+const source$ = of(1,2,3,4,5);
+
+console.log('proving');
+source$.subscribe(observer);
+console.log('this is synchronous');
+
+/*
+ * If you just want to emit numbers between a specific range
+ * you could also use the range operator instead.
+ */
+console.log('proving');
+range(1,5).subscribe(observer);
+console.log('this is synchronous');
+
+..................................................
+
+import { from } from 'rxjs';
+
+const observer = {
+  next: val => console.log('next', val),
+  error: err => console.log('error', err),
+  complete: () => console.log('complete!')
+};
+
+/*
+ * from can turn nearly anything into an observable
+ * When from receieves an array, it loops through each item
+ * within that array, emitting them in sequence.
+ */
+from([1, 2, 3, 4, 5]).subscribe(console.log);
+
+/*
+ * This works for any array like object as well, for instance, 
+ * when from receieves a string (which has a length property) 
+ * it will loop through emitting each character.
+ */
+from('Hello').subscribe(console.log);
+
+/*
+ * When from receieves a promise, it will call .then, emitting
+ * the response. We will see ways to make requests using an
+ * observable interface in upcoming lessons, but for now we will
+ * just use fetch.
+ */
+from(fetch('https://api.github.com/users/octocat')).subscribe(console.log);
+
+function* hello() {
+    yield 'Hello';
+    yield 'World';
+};
+
+const iterator = hello();
+
+/*
+ * When from receieves a iterator it will drop it in a do while loop,
+ * calling .next and emitting each item until there are no more items left.
+ */
+from(iterator).subscribe(console.log);
+
+.......................................................................
+
+
+import { interval, timer } from 'rxjs';
+
+/*
+ * interval emits numbers in sequence based on the
+ * duration that you specify. In this case, a number
+ * will be emitted every 1000ms (1s)
+ */
+const interval$ = interval(1000);
+
+/*
+ * We'll just supply a function for next in this case,
+ * rather than observer object.
+ */
+interval$.subscribe(console.log);
+
+/*
+ * If you need the first item to be emitted on an interval
+ * different than the rest, you can use the timer operator instead.
+ * For example, let's have the first item emit immediately, followed
+ * by a value every 1000ms after.
+ */
+// const timer$ = timer(0, 1000);
+
+/*
+ * You can also emit a single item after a specified duration, then complete,
+ * by just supplying the first argument.
+ */
+// const timer$ = timer(1000);
+
