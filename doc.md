@@ -311,4 +311,23 @@ interval$.subscribe(console.log);
  * by just supplying the first argument.
  */
 // const timer$ = timer(1000);
+...........................................................................................
+Operators:
+Non configurational operatore generally accepts some configuration options returning a functionthat aacepts observable source returning a new observable so one way to invoke an operator is to call it.
+
+operatorOne(config)(observable$).
+
+Pipeable operator 
+observable$.pipe(
+  operatorOne(config),
+  operatorTwo(config)
+)
+In pipeable operator reacieve a source observablerather than standalone function.shown above.
+
+observable$.pipe(
+  operatorOne(config),
+  operatorTwo(config)
+).subscribe(observer);
+
+Marble Diagrams
 
