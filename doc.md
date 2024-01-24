@@ -329,5 +329,77 @@ observable$.pipe(
   operatorTwo(config)
 ).subscribe(observer);
 
-Marble Diagrams
+.................................................
 
+To Add opertor to stream we use pipe operator
+of(1,2,3,4,5).pipe(
+  map(value => value*10)
+).subscribe(console.log)
+
+The source opertor observable does impact any other stream.
+
+const keycodeWithPluck$ = keyup$.pipe(
+  pluck('code')
+); the pluck operator use the property.
+
+ * For scenarios where you ALWAYS want to map to the same,
+ * static value, you can use mapTo instead. This emits the value
+ * you supply on any emissions from the source observable. We will see
+ * a few examples of where this can be useful in upcoming lessons.
+ */
+const pressed$ = keyup$.pipe(
+  mapTo('Key Pressed!')
+);
+Map allow us to tranform of events using projectionopertots.
+
+Filter opertors only emits the value we are interested in based on function we provide based on true or fallse for each value emmited by source observable.
+
+
+.........................................................
+Recucer operotor
+Reduces the values from source observable to a single value that's emitted when the source completes.
+Like Array.prototype.reduce(), reduce applies an accumulator function against an accumulation and each value of the source Observable (from the past) to reduce it to a single value, emitted on the output Observable. Note that reduce will only emit one value, only when the source Observable completes. It is equivalent to applying operator scan followed by operator last.
+
+Returns an Observable that applies a specified accumulator function to each item emitted by the source Observable. If a seed value is specified, then that value will be used as the initial value for the accumulator. If no seed value is specified, the first item of the source is used as the seed.
+
+// RxJS v6+
+import { of } from 'rxjs';
+import { reduce } from 'rxjs/operators';
+
+const source = of(1, 2, 3, 4);
+const example = source.pipe(reduce((acc, val) => acc + val));
+//output: Sum: 10'
+const subscribe = example.subscribe(val => console.log('Sum:', val));
+
+Tap Operator
+
+import { map, tap } from 'rxjs/operators';
+
+const numbers$ = of(1, 2, 3, 4, 5);
+
+/*
+ * tap can be used to spy on your streams, performing side effects
+ * such as logging, and is particularly useful for debugging.
+ * In the example below, we are spying on the value before and after
+ * the map operator.
+ */
+numbers$
+  .pipe(
+    tap(value => console.log('before', value)),
+    map(value => value * 10),
+    /*
+     * tap also accepts an observer object, if you wish to also
+     * receieve notifications on complete or error. You will use this
+     * far less often, but it's good to know just in case...
+     */
+    tap({
+      next: value => console.log('after', value),
+      complete: () => console.log('done!'),
+      error: error => {
+        // do something
+      }
+    })
+  )
+  .subscribe(value => {
+    console.log('from subscribe', value);
+  });

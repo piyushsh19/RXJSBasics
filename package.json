@@ -11,5 +11,8 @@
     "start": "parcel index.html"
   },
   "author": "Brian Troncone, Ultimate Courses",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
 }
