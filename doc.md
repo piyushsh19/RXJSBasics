@@ -403,3 +403,43 @@ numbers$
   .subscribe(value => {
     console.log('from subscribe', value);
   });
+
+  ....................................................................
+  Filtering Operator
+
+  signature: filter(select: Function, thisArg: any): Observable
+
+  filter will only emit values that meet the specified condition. If no values in the observable satisfy the condition, nothing gets emitted.
+  // RxJS v6+
+import { from } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+//emit (1,2,3,4,5)
+const source = from([1, 2, 3, 4, 5]);
+//filter out non-even numbers
+const example = source.pipe(filter(num => num % 2 === 0));
+//output: "Even number: 2", "Even number: 4"
+const subscribe = example.subscribe(val => console.log(`Even number: ${val}`));
+
+// RxJS v6+
+import { from } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+//emit ({name: 'Joe', age: 31}, {name: 'Bob', age:25})
+const source = from([
+  { name: 'Joe', age: 31 },
+  { name: 'Bob', age: 25 }
+]);
+//filter out people with age under 30
+const example = source.pipe(filter(person => person.age >= 30));
+//output: "Over 30: Joe"
+const subscribe = example.subscribe(val => console.log(`Over 30: ${val.name}`));
+
+Parameters
+predicate	(value: T, index: number) => boolean	
+A function that evaluates each value emitted by the source Observable. If it returns true, the value is emitted, if false the value is not passed to the output Observable. The index parameter is the number i for the i-th source emission that has happened since the subscription, starting from the number 0.
+
+thisArg	any	
+Optional. Default is undefined.
+
+An optional argument to determine the value of this in the predicate function.
