@@ -443,3 +443,35 @@ thisArg	any
 Optional. Default is undefined.
 
 An optional argument to determine the value of this in the predicate function.
+
+Take operator emits the first x values from the source then completes. In this case, 1,2,3 will be emitted.
+
+takeWhile emits values as long as they pass
+the provided condition. As soon as the predicate
+returns false, takeWhile completes the observable.
+You can also pass an optional second parameter of true
+if you want takeWhile to emit the value that caused
+your condition to return false, before completing.
+
+takeUntil lets you complete a stream base on when another stream emits a value. For instance,in this example our counter will run until the click$ stream emits a value, at which point the observable will be completed.
+
+Rate Limiting Operators:
+
+Emits a notification from the source Observable only after a particular time span determined by another Observable has passed without another source emission.
+
+debounce<T>(durationSelector: (value: T) => ObservableInput<any>): MonoTypeOperatorFunction<T>
+
+durationSelector	(value: T) => ObservableInput<any>	
+A function that receives a value from the source Observable, for computing the timeout duration for each source value, returned as an Observable or a Promise.
+MonoTypeOperatorFunction<T>: A function that returns an Observable that delays the emissions of the source Observable by the specified duration Observable returned by durationSelector, and may drop some values if they occur too frequently.
+
+import { fromEvent, scan, debounce, interval } from 'rxjs';
+
+const clicks = fromEvent(document, 'click');
+const result = clicks.pipe(
+  scan(i => ++i, 1),
+  debounce(i => interval(200 * i))
+);
+result.subscribe(x => console.log(x));
+
+Example of debounceTime  is when user input from textbox is or doucument is pause like GOOGLE DOCS or making a request for data after a specified time like a search type

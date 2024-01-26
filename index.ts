@@ -1,7 +1,3 @@
-import './style.css';
-console.clear();
-
-// begin lesson code
 import { Observable } from 'rxjs';
 
 /*
