@@ -71,3 +71,13 @@ body {
   position: relative;
   top: 6px;
 }
+
+#start, #stop {
+  color: white;
+}
+#start{
+  background-color: green;
+}
+#stop {
+  background-color: red;
+}

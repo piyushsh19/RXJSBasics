@@ -388,7 +388,7 @@ numbers$
     tap(value => console.log('before', value)),
     map(value => value * 10),
     /*
-     * tap also accepts an observer object, if you wish to also
+  tap also accepts an observer object, if you wish to also
      * receieve notifications on complete or error. You will use this
      * far less often, but it's good to know just in case...
      */
@@ -475,3 +475,11 @@ const result = clicks.pipe(
 result.subscribe(x => console.log(x));
 
 Example of debounceTime  is when user input from textbox is or doucument is pause like GOOGLE DOCS or making a request for data after a specified time like a search type
+For extremely active streams like scroll events, throttleTime can be used to limit the number of emitted values. In this case, we'll just update our scroll bar every 30ms of scrolling.
+
+AuditTime will begin window when the source emits. Then once the window passes, the last emitted valu from the source will be emitted. For instance, in thi example if you click a 4s timer will be started. At the end, the last click event during that windo will be emitted by auditTime. This is similar to th behavior of throttleTime, if you were to pass in a confi to emit the value on the trailing edge.
+
+Sample time will emit the last emitted value within that window. For instance, in this example we are sampling at an interval of 4s. When the 4s interval timer begins, you can click twice. Once 4s passes,the second click will be emitted. This behavior is then repeated.If no values are emitted from the source in the sample window no values are emitted by sampleTime.
+
+
+Transform Operators
