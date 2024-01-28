@@ -483,3 +483,97 @@ Sample time will emit the last emitted value within that window. For instance, i
 
 
 Transform Operators
+
+mergeMap invokes the function you provide,subscribing to each returned observable internally.Any values emitted by these inner observablesare then emitted by mergeMap. By default thereis no limit to the number of active innersubscriptions that can be active at a timewith mergeMap, so if you continually click onthe page more and more timers will be activated.This can be dangerous if you have long running inner observables and forget to cleanthem up.
+
+mergeMap is good for 'fire and forget' save request you do not want to be cancelled. For instance, in this example we are emulating a save of coordinates anytime the user clicks on the page.
+
+concat based operators are the 'single file line'of operators, maintaining 1 active inner observable aa time. For instance, in this example on the first click a neinterval observable will be subscribed to internallywith any emitted values being emitted by concatMap.If you click again while that inner intervais active, the next interval will be queued untithe current active interval completes.
+
+Combination Operator:
+
+StartWith()
+Returns an observable that, at the moment of subscription, will synchronously emit all values provided to this operator, then subscribe to the source and mirror all of its emissions to subscribers.
+
+startWith<T, D>(...values: D[]): OperatorFunction<T, T | D>
+Parameters:
+values	D[]	
+Items you want the modified Observable to emit first.
+
+Returns
+OperatorFunction<T, T | D>: A function that returns an Observable that synchronously emits provided values before subscribing to the source Observable.
+This is a useful way to know when subscription has occurred on an existing observable.First emits its arguments in order, and then any emissions from the source.
+
+import { timer, map, startWith } from 'rxjs';
+
+timer(1000)
+  .pipe(
+    map(() => 'timer emit'),
+    startWith('timer start')
+  )
+  .subscribe(x => console.log(x));
+
+// results:
+// 'timer start'
+// 'timer emit'
+
+EndWith
+
+Returns an observable that will emit all values from the source, then synchronously emit the provided value(s) immediately after the source completes.
+
+endWith<T>(...values: (SchedulerLike | T)[]): MonoTypeOperatorFunction<T>
+Parameters
+values	(SchedulerLike | T)[]	
+Items you want the modified Observable to emit last.
+
+Returns
+MonoTypeOperatorFunction<T>: A function that returns an Observable that emits all values from the source, then synchronously emits the provided value(s) immediately after the source completes.
+
+Description
+NOTE: Passing a last argument of a Scheduler is deprecated, and may result in incorrect types in TypeScript.
+
+This is useful for knowing when an observable ends. Particularly when paired with an operator like takeUntil
+
+forkJoin :- Accepts an Array of ObservableInput or a dictionary Object of ObservableInput and returns an Observable that emits either an array of values in the exact same order as the passed array, or a dictionary of values in the same shape as the passed dictionary.
+
+combineLatest :- Combines multiple Observables to create an Observable whose values are calculated from the latest values of each of its input Observables.
+
+combineLatest<O extends ObservableInput<any>, R>(...args: any[]): Observable<R> | Observable<ObservedValueOf<O>[]>
+Parameters
+args	any[]	
+Any number of ObservableInputs provided either as an array or as an object to combine with each other. If the last parameter is the function, it will be used to project the values from the combined latest values into a new value on the output Observable.
+
+Returns
+Observable<R> | Observable<ObservedValueOf<O>[]>: An Observable of projected values from the most recent values from each ObservableInput, or an array of the most recent values from each ObservableInput.
+
+Description
+Whenever any input Observable emits a value, it computes a formula using the latest values from all the inputs, then emits the output of that formula.
+
+mergeWith :- Merge the values from all observables to a single observable result.
+
+mergeWith<T, A extends readonly unknown[]>(...otherSources: [...ObservableInputTuple<A>]): OperatorFunction<T, T | A[number]>
+Parameters
+otherSources	[...ObservableInputTuple<A>]	
+the sources to combine the current source with.
+
+Returns
+OperatorFunction<T, T | A[number]>: A function that returns an Observable that merges the values from all given Observables.
+
+Description
+Creates an observable, that when subscribed to, subscribes to the source observable, and all other sources provided as arguments. All values from every source are emitted from the resulting subscription.
+
+When all sources complete, the resulting observable will complete.
+
+When any source errors, the resulting observable will error.
+
+forkJoin(...args: any[]): Observable<any>
+Parameters
+args	any[]	
+Any number of ObservableInputs provided either as an array, as an object or as arguments passed directly to the operator.
+
+Returns
+Observable<any>: Observable emitting either an array of last values emitted by passed Observables or value from project function.
+
+Description
+Wait for Observables to complete and then combine last values they emitted; complete immediately if an empty array is passed.
+
