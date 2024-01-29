@@ -50,7 +50,7 @@ combineLatest(
 )
 .pipe(
   filter(([first, second]) => {
-    return !isNaN(first) && !isNaN(second);
+    return !isNaN(first) && !isNaN(second); // its ensure that first and second are valid numbers.
   }),
   map(([first, second]) => first + second)
 )

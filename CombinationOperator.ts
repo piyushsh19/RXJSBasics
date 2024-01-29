@@ -2,7 +2,6 @@
 import { interval, fromEvent, of } from 'rxjs';
 import { scan, mapTo, takeWhile, takeUntil, tap, startWith, endWith } from 'rxjs/operators';
 
-m
 const numbers$ = of(1,2,3);
 
 numbers$.pipe(

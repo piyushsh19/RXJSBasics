@@ -577,3 +577,21 @@ Observable<any>: Observable emitting either an array of last values emitted by p
 Description
 Wait for Observables to complete and then combine last values they emitted; complete immediately if an empty array is passed.
 
+Recap of CombinationOperators
+
+startWith operators - apeends a specified values to the stream emmiting them first on subscription.
+
+EndWith operators - emits values on complettion of stream.
+
+Concat :-  Let us create an obserrvable from a variable numbers of others observable we suplly on subscription, it will subscribe to the ineer observable in order so as the first completes then the second is subscribed.It is used to maintain order for functionality such as NetworkRequest or certain ui animation.
+
+Merge let us create an observab;le from variable number of other observables then it subscribe to all inner observable at once  emiiting all values emmited by any of these observables.Merge is a static creation operator its will be imported from basic rxjs path.Its accepst any number of parameters.
+
+CombineLatest(obser1,obser2) - On subsrciption it will subscribe to all the inner observables after all the other observables have emmited at least one value. IT WILL GIVE THE LAST EMIITED VALUE FROM THE EACH, eg-
+
+(1,a)
+(2,a)
+(2,b)
+(3,b)
+
+forkJoin operator lets you create an observable froma avariable number of ther s observable . On subscription frok join subsrcibes to all inner pobservable, after all inner observable have completed. It emits the latest emmited values from each onservablesas an array. The fork join we could wrap streanm as objects
